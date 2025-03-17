@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { handleError, handleSuccess } from "@/utils";
 import axios from "axios";
 import { AlignCenter, AlignLeft, AlignRight, PaintBucket, Trash2 } from "lucide-react";
@@ -49,30 +49,20 @@ export default function TodoApp() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!todoData.title.trim() || !todoData.description.trim()) {
       handleError("All fields are required");
       return;
     }
-
     try {
       const response = await axios.post("https://todos-backend-cehi.onrender.com/api/savetodo", {
         ...todoData,
         date: currentDate,
       });
-      console.log("Todo data saved:", response.data);
-
-      setTodoData({
-        title: "",
-        description: "",
-        date: "",
-      });
-
-      handleSuccess ("todo add sucessfully");
-
+      setTodoData({ title: "", description: "", date: "" });
+      handleSuccess("Todo added successfully");
       fetchData();
     } catch (err) {
-      handleError("Error in saving todo:", err);
+      handleError("Error in saving todo", err);
     }
   };
 
@@ -81,7 +71,6 @@ export default function TodoApp() {
       const response = await axios.post("https://todos-backend-cehi.onrender.com/api/fetchdata");
       if (response.status === 200) {
         setFetchTodo(response.data);
-        // setTodoData ("");
       }
     } catch (err) {
       console.log("Error in fetching todo data:", err);
@@ -93,12 +82,12 @@ export default function TodoApp() {
       const response = await axios.delete(`https://todos-backend-cehi.onrender.com/api/deletetodo/${id}`);
       if (response.status === 200) {
         handleSuccess("Todo deleted successfully");
-        setFetchTodo(fetchTodo.filter(todo => todo.id !== id));
-        fetchData ();
+        setFetchTodo(fetchTodo.filter((todo) => todo._id !== id));
+        fetchData();
       }
     } catch (err) {
       console.log("Error deleting todo:", err);
-      handleError ("something went wrong");
+      handleError("Something went wrong");
     }
   };
 
@@ -107,26 +96,24 @@ export default function TodoApp() {
   }, []);
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      <aside className="w-1/5 bg-white shadow-md p-4">
-        <div className="flex items-center justify-between mb-4">
-          <h1 className="text-lg font-bold">TODO</h1>
-        </div>
-        {fetchTodo.map((item) => (
-  <li key={item._id} className="bg-white p-4 mb-3 rounded-lg shadow hover:shadow-lg transition duration-300 border-l-4 border-blue-500 list-none">
-    <div className="flex justify-between items-center">
-      <div>
-        <p className="text-lg font-semibold text-gray-800"><strong>{item.title}</strong></p>
-        <p className="text-gray-600"><strong></strong><span dangerouslySetInnerHTML={{ __html: item.description }}></span></p>
-        <br />
-        <p className="text-sm text-gray-500 italic"><strong>{item.date}</strong></p>
-      </div>
-      <button onClick={() => handleDelete(item._id)} className="bg-red-500 text-white p-1 px-2 rounded cursor-pointer">
-        <Trash2 size={20} />
-      </button>
-    </div>
-  </li>
-))}
+    <div className="flex flex-col md:flex-row h-screen bg-gray-100">
+      <aside className="w-full md:w-1/4 bg-white shadow-md p-4">
+        <h1 className="text-lg font-bold mb-4">TODO</h1>
+        {/* <input type="text" placeholder="Search" className="w-full p-2 border rounded-md" /> */}
+        <ul className="mt-4">
+          {fetchTodo.map((item) => (
+            <li key={item._id} className="bg-white p-4 mb-3 rounded-lg shadow border-l-4 border-blue-500 list-none flex justify-between items-center">
+              <div>
+                <p className="text-lg font-semibold">{item.title}</p>
+                <p className="text-gray-600" dangerouslySetInnerHTML={{ __html: item.description }}></p>
+                <p className="text-sm text-gray-500 italic">{item.date}</p>
+              </div>
+              <button onClick={() => handleDelete(item._id)} className="bg-red-500 text-white p-2 rounded">
+                <Trash2 size={20} />
+              </button>
+            </li>
+          ))}
+        </ul>
       </aside>
 
       <main className="flex-1 p-6">
@@ -138,38 +125,28 @@ export default function TodoApp() {
             placeholder="Title"
             onChange={handleChange}
             value={todoData.title}
-            className="w-full p-2 mb-2 border-1 rounded-[10px]"
+            className="w-full p-2 mb-2 border rounded-md"
           />
-          <br />
-          <br />
-
-          <div className="flex gap-3.5 mb-2">
-            <button onClick={() => formatText("bold")} className="p-1 bg-gray-200 rounded w-8 cursor-pointer">B</button>
-            <button onClick={() => formatText("italic")} className="p-1 bg-gray-200 rounded w-8 cursor-pointer">I</button>
-            <button onClick={() => formatText("underline")} className="p-1 bg-gray-200 rounded w-8 cursor-pointer">U</button>
-            <button onClick={() => formatAlignment("Left")} className="p-1 bg-gray-200 rounded cursor-pointer">
+          <div className="flex gap-3 mb-2">
+            <button onClick={() => formatText("bold")} className="p-1 bg-gray-200 rounded">B</button>
+            <button onClick={() => formatText("italic")} className="p-1 bg-gray-200 rounded">I</button>
+            <button onClick={() => formatText("underline")} className="p-1 bg-gray-200 rounded">U</button>
+            <button onClick={() => formatAlignment("Left")} className="p-1 bg-gray-200 rounded">
               <AlignLeft size={22} />
             </button>
-            <button onClick={() => formatAlignment("Center")} className="p-1 bg-gray-200 rounded cursor-pointer">
+            <button onClick={() => formatAlignment("Center")} className="p-1 bg-gray-200 rounded">
               <AlignCenter size={22} />
             </button>
-            <button onClick={() => formatAlignment("Right")} className="p-1 bg-gray-200 rounded cursor-pointer">
+            <button onClick={() => formatAlignment("Right")} className="p-1 bg-gray-200 rounded">
               <AlignRight size={22} />
             </button>
             <div className="relative flex items-center">
               <PaintBucket className="absolute left-2 text-gray-500" size={18} />
-              <input type="color" onChange={(e) => formatColor(e.target.value)} className="h-8 w-10 cursor-pointer pl-6 rounded-4xl"/>
-            </div>
+               <input type="color" onChange={(e) => formatColor(e.target.value)} className="h-8 w-10 cursor-pointer pl-6 rounded-4xl"/>
+             </div>
           </div>
-
-          <div
-            ref={descriptionRef}
-            contentEditable
-            onInput={handleDescriptionChange}
-            className="w-full p-2 border-1 rounded min-h-[200px] bg-white"
-          ></div>
-          <br />
-          <button className="w-[15%] p-2 bg-blue-500 text-white rounded cursor-pointer mt-2" onClick={handleSubmit}>
+          <div ref={descriptionRef} contentEditable onInput={handleDescriptionChange} className="w-full p-2 border rounded min-h-[200px] bg-white"></div>
+          <button className="w-full md:w-auto p-2 bg-blue-500 text-white rounded mt-2" onClick={handleSubmit}>
             Add Todo
           </button>
         </div>
