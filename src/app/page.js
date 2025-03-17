@@ -108,7 +108,7 @@ export default function TodoApp() {
                 <p className="text-gray-600" dangerouslySetInnerHTML={{ __html: item.description }}></p>
                 <p className="text-sm text-gray-500 italic">{item.date}</p>
               </div>
-              <button onClick={() => handleDelete(item._id)} className="bg-red-500 text-white p-2 rounded">
+              <button onClick={() => handleDelete(item._id)} className="bg-red-500 text-white p-2 rounded cursor-pointer">
                 <Trash2 size={20} />
               </button>
             </li>
@@ -128,16 +128,16 @@ export default function TodoApp() {
             className="w-full p-2 mb-2 border rounded-md"
           />
           <div className="flex gap-3 mb-2">
-            <button onClick={() => formatText("bold")} className="p-1 bg-gray-200 rounded">B</button>
-            <button onClick={() => formatText("italic")} className="p-1 bg-gray-200 rounded">I</button>
-            <button onClick={() => formatText("underline")} className="p-1 bg-gray-200 rounded">U</button>
-            <button onClick={() => formatAlignment("Left")} className="p-1 bg-gray-200 rounded">
+            <button onClick={() => formatText("bold")} className="p-1 bg-gray-200 rounded cursor-pointer">B</button>
+            <button onClick={() => formatText("italic")} className="p-1 bg-gray-200 rounded cursor-pointer">I</button>
+            <button onClick={() => formatText("underline")} className="p-1 bg-gray-200 rounded cursor-pointer">U</button>
+            <button onClick={() => formatAlignment("Left")} className="p-1 bg-gray-200 rounded cursor-pointer">
               <AlignLeft size={22} />
             </button>
-            <button onClick={() => formatAlignment("Center")} className="p-1 bg-gray-200 rounded">
+            <button onClick={() => formatAlignment("Center")} className="p-1 bg-gray-200 rounded cursor-pointer">
               <AlignCenter size={22} />
             </button>
-            <button onClick={() => formatAlignment("Right")} className="p-1 bg-gray-200 rounded">
+            <button onClick={() => formatAlignment("Right")} className="p-1 bg-gray-200 rounded cursor-pointer">
               <AlignRight size={22} />
             </button>
             <div className="relative flex items-center">
@@ -146,7 +146,7 @@ export default function TodoApp() {
              </div>
           </div>
           <div ref={descriptionRef} contentEditable onInput={handleDescriptionChange} className="w-full p-2 border rounded min-h-[200px] bg-white"></div>
-          <button className="w-full md:w-auto p-2 bg-blue-500 text-white rounded mt-2" onClick={handleSubmit}>
+          <button className="w-full md:w-auto p-2 bg-blue-500 text-white rounded mt-2 cursor-pointer" onClick={handleSubmit}>
             Add Todo
           </button>
         </div>
